@@ -8,7 +8,8 @@ export class ToDoTask {
     this.description = data.description;
     this.dueDate = data.dueDate;
     this.priority = data.priority;
-    this.completed = data.completed;
+    this.project = data.project;
+    this.completed = data.completed ? data.completed : false;
   }
 
   completeToDo() {

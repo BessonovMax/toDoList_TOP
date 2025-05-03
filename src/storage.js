@@ -1,5 +1,3 @@
-import { ToDoTask } from "./task";
-
 export const Storage = (function () {
   const saveTasks = (tasks) => {
     localStorage.setItem("tasks", JSON.stringify(tasks));

@@ -5,6 +5,7 @@ const listEl = document.querySelector(".list");
 export function printTask(task) {
   const taskDiv = document.createElement("div");
   taskDiv.id = task.id;
+  taskDiv.classList.add("task");
   const titleEl = document.createElement("h1");
   titleEl.textContent = task.title;
 
@@ -24,6 +25,9 @@ export function printTask(task) {
   const priorityEl = document.createElement("div");
   priorityEl.textContent = task.priority;
 
+  const projectEl = document.createElement("p");
+  projectEl.textContent = task.project;
+
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "X";
   deleteBtn.addEventListener("click", () => {
@@ -31,11 +35,12 @@ export function printTask(task) {
     printList();
   });
 
-  taskDiv.appendChild(titleEl);
   taskDiv.appendChild(checkEl);
+  taskDiv.appendChild(titleEl);
   taskDiv.appendChild(descriptionEl);
   taskDiv.appendChild(dateEl);
   taskDiv.appendChild(priorityEl);
+  taskDiv.appendChild(projectEl);
   taskDiv.appendChild(deleteBtn);
   listEl.appendChild(taskDiv);
 }
