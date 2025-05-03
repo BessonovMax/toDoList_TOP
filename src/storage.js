@@ -5,12 +5,10 @@ export const Storage = (function () {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };
 
-  const loadTasks = () => {
+  const loadRawTasks = () => {
     const data = localStorage.getItem("tasks");
-    const rawTasks = data ? JSON.parse(data) : [];
-    console.log(rawTasks);
-    return rawTasks.map((taskData) => new ToDoTask(taskData));
+    return data ? JSON.parse(data) : [];
   };
 
-  return { saveTasks, loadTasks };
+  return { saveTasks, loadRawTasks };
 })();

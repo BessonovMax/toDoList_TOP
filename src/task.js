@@ -3,7 +3,7 @@ import { Storage } from "./storage";
 
 export class ToDoTask {
   constructor(data) {
-    this.id = uuidv4();
+    this.id = data.id ? data.id : uuidv4();
     this.title = data.title;
     this.description = data.description;
     this.dueDate = data.dueDate;
@@ -15,7 +15,7 @@ export class ToDoTask {
     this.completed = this.completed ? false : true;
   }
 }
-export const toDoList = Storage.loadTasks();
+export const toDoList = Storage.loadRawTasks().map((raw) => new ToDoTask(raw));
 
 export function createTask(data) {
   const newTask = new ToDoTask(data);
@@ -31,9 +31,9 @@ export function toggleComplete(id) {
 }
 
 export function deleteTask(id) {
-  toDoList.splice(
-    toDoList.indexOf(toDoList.filter((task) => task.id === id)),
-    1
-  );
-  Storage.saveTasks(toDoList);
+  const indx = toDoList.findIndex((task) => task.id === id);
+  if (indx > -1) {
+    toDoList.splice(indx, 1);
+    Storage.saveTasks(toDoList);
+  }
 }
