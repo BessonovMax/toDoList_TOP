@@ -4,6 +4,15 @@ form {
   gap: 1rem;
 }
 
+.projects {
+  display: flex;
+  gap: 1rem;
+}
+
+.project-wrapper {
+  cursor: pointer;
+}
+
 .list {
   display: flex;
   flex-direction: column;

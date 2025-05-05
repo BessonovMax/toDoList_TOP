@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { Storage } from "./storage";
 
-export class ToDoTask {
+export class toDoTask {
   constructor(data) {
     this.id = data.id ? data.id : uuidv4();
     this.title = data.title;
@@ -16,10 +16,11 @@ export class ToDoTask {
     this.completed = this.completed ? false : true;
   }
 }
-export const toDoList = Storage.loadRawTasks().map((raw) => new ToDoTask(raw));
+
+export const toDoList = Storage.loadRawTasks().map((raw) => new toDoTask(raw));
 
 export function createTask(data) {
-  const newTask = new ToDoTask(data);
+  const newTask = new toDoTask(data);
   toDoList.push(newTask);
 
   Storage.saveTasks(toDoList);
