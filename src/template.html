@@ -40,9 +40,26 @@
       </select>
       <button type="submit">Add Task</button>
     </form>
-
     <div class="list-wrapper">
-      <div class="projects"><span class="project-wrapper">All tasks</span></div>
+      <div class="projects">
+        <div class="project-add">
+          <button class="open-project-btn">Add Project</button>
+          <dialog>
+            <form class="project-add-form">
+              <input
+                type="text"
+                id="add-project-input"
+                name="projectInput"
+                placeholder="Project name: "
+                required
+              />
+              <button class="close-project-btn">Close</button>
+              <button type="submit" class="add-project-btn">add project</button>
+            </form>
+          </dialog>
+        </div>
+        <div class="project-list"></div>
+      </div>
       <div class="list"></div>
     </div>
   </body>

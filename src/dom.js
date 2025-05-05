@@ -1,14 +1,30 @@
-import { Projects } from "./project";
+import { createProject, deleteProject, Projects } from "./project";
 import { deleteTask, toDoList, toggleComplete, createTask } from "./task";
 
 // listing all projects in form options
-const listProjectOptions = (function () {
+export const listProjectOptions = function () {
   const projectsOptions = document.querySelector("#project");
   Projects.forEach((project) => {
     const option = document.createElement("option");
-    option.value = project;
-    option.textContent = project;
+    option.value = project.name;
+    option.textContent = project.name;
     projectsOptions.appendChild(option);
+  });
+};
+
+const addProjectForm = (function () {
+  const addProjectForm = document.querySelector(".project-add-form");
+  const dialog = document.querySelector("dialog");
+  const openProjectBtn = document.querySelector(".open-project-btn");
+  openProjectBtn.addEventListener("click", () => dialog.showModal());
+  const closeProjectBtn = document.querySelector(".close-project-btn");
+  closeProjectBtn.addEventListener("click", () => dialog.close());
+  addProjectForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const projectInput = e.target.projectInput.value;
+    createProject(projectInput);
+    printProjects();
+    listProjectOptions();
   });
 })();
 
@@ -22,16 +38,25 @@ form.addEventListener("submit", (e) => {
 });
 
 const listEl = document.querySelector(".list");
+const projectList = document.querySelector(".project-list");
 
 function printProject(project) {
-  const projectsEl = document.querySelector(".projects");
-  const projectWrapper = document.createElement("span");
-  projectWrapper.addEventListener("click", () => {
+  const projectEL = document.createElement("div");
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "X";
+  deleteBtn.addEventListener("click", () => {
+    if (project.name !== "Default") {
+      deleteProject(project.id);
+      printProjects();
+    }
+  });
+  projectEL.addEventListener("click", () => {
     printProjectTasks(project);
   });
-  projectWrapper.className = "project-wrapper";
-  projectWrapper.textContent = `# ${project}`;
-  projectsEl.appendChild(projectWrapper);
+  projectEL.className = "project";
+  projectEL.textContent = `# ${project.name}`;
+  projectEL.appendChild(deleteBtn);
+  projectList.appendChild(projectEL);
 }
 
 function printTask(task) {
@@ -83,6 +108,7 @@ export function printList() {
 }
 
 export function printProjects() {
+  projectList.innerHTML = "";
   Projects.forEach((project) => printProject(project));
 }
 

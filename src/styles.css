@@ -9,7 +9,12 @@ form {
   gap: 1rem;
 }
 
-.project-wrapper {
+.project-list {
+  display: flex;
+  gap: 1rem;
+}
+
+.project {
   cursor: pointer;
 }
 

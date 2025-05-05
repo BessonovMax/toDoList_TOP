@@ -14,7 +14,7 @@ export const Storage = (function () {
 
   const loadProjects = () => {
     const data = localStorage.getItem("projects");
-    return data ? JSON.parse(data) : ["Default", "yoba", "MATH", "123"];
+    return data ? JSON.parse(data) : [];
   };
 
   return { saveTasks, loadRawTasks, saveProjects, loadProjects };
