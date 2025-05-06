@@ -1,5 +1,6 @@
 import { createProject, deleteProject, Projects } from "./project";
 import { deleteTask, toDoList, toggleComplete, createTask } from "./task";
+import { format } from "date-fns";
 
 const addProjectForm = (function () {
   const addProjectForm = document.querySelector(".project-add-form");
@@ -46,6 +47,9 @@ const addTaskForm = (function () {
     dialog.close();
     e.target.reset();
   });
+  const dateInput = document.querySelector("#dueDate");
+  const today = format(new Date(), "yyyy-MM-dd");
+  dateInput.value = today;
 })();
 
 // listing all projects in form options
