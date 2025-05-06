@@ -6,7 +6,85 @@
     <title>My ToDo List</title>
   </head>
   <body>
-    <form>
+    <nav>
+      <section>
+        <button class="open-task-btn">New Task</button>
+        <dialog class="task-dialog">
+          <form class="add-task-form">
+            <input
+              type="text"
+              name="title"
+              id="title"
+              placeholder="Task Title"
+              required
+            />
+            <input
+              type="text"
+              name="description"
+              id="description"
+              placeholder="Task Description"
+            />
+            <label for="dueDate">Due date:</label>
+            <input
+              type="date"
+              name="dueDate"
+              id="dueDate"
+              placeholder="Task Title"
+              required
+            />
+            <label for="priority">Priority:</label>
+            <select name="priority" id="priority" required>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+            <label for="project">Project:</label>
+            <select name="projectId" id="project" required></select>
+            <button class="close-task-btn">Close</button>
+            <button type="submit">Add Task</button>
+          </form>
+        </dialog>
+        <ul>
+          <li>Today</li>
+          <li>Tomorrow</li>
+          <li>This Week</li>
+          <li>All tasks</li>
+        </ul>
+      </section>
+      <section>
+        <div class="projects">
+          <h2>My projects</h2>
+          <div class="project-add">
+            <button class="open-project-btn">Add Project</button>
+            <dialog class="project-dialog">
+              <form class="project-add-form">
+                <input
+                  type="text"
+                  id="add-project-input"
+                  name="projectInput"
+                  placeholder="Project name: "
+                  required
+                />
+                <button class="close-project-btn">Close</button>
+                <button type="submit" class="add-project-btn">
+                  add project
+                </button>
+              </form>
+            </dialog>
+          </div>
+          <div class="project-list"></div>
+        </div>
+      </section>
+    </nav>
+    <main>
+      <h1>ToDo List</h1>
+      <div class="list"></div>
+    </main>
+  </body>
+</html>
+
+<!-- 
+  <form>
       <input
         type="text"
         name="title"
@@ -36,7 +114,6 @@
       </select>
       <label for="project">Project:</label>
       <select name="project" id="project" required>
-        <!-- <option value="default">Default</option> -->
       </select>
       <button type="submit">Add Task</button>
     </form>
@@ -62,5 +139,4 @@
       </div>
       <div class="list"></div>
     </div>
-  </body>
-</html>
+-->

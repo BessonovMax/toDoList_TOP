@@ -1,41 +1,60 @@
 import { createProject, deleteProject, Projects } from "./project";
 import { deleteTask, toDoList, toggleComplete, createTask } from "./task";
 
-// listing all projects in form options
-export const listProjectOptions = function () {
-  const projectsOptions = document.querySelector("#project");
-  Projects.forEach((project) => {
-    const option = document.createElement("option");
-    option.value = project.name;
-    option.textContent = project.name;
-    projectsOptions.appendChild(option);
-  });
-};
-
 const addProjectForm = (function () {
   const addProjectForm = document.querySelector(".project-add-form");
-  const dialog = document.querySelector("dialog");
+  const dialog = document.querySelector(".project-dialog");
   const openProjectBtn = document.querySelector(".open-project-btn");
   openProjectBtn.addEventListener("click", () => dialog.showModal());
   const closeProjectBtn = document.querySelector(".close-project-btn");
-  closeProjectBtn.addEventListener("click", () => dialog.close());
+  closeProjectBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    dialog.close();
+    e.target.reset();
+  });
   addProjectForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const projectInput = e.target.projectInput.value;
     createProject(projectInput);
     printProjects();
     listProjectOptions();
+    dialog.close();
+    e.target.reset();
   });
 })();
 
-//collecting data from form and creating task with this data
-const form = document.querySelector("form");
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const data = Object.fromEntries(new FormData(e.target).entries());
-  createTask(data);
-  printList();
-});
+const addTaskForm = (function () {
+  const form = document.querySelector(".add-task-form");
+  const dialog = document.querySelector(".task-dialog");
+  const openTaskBtn = document.querySelector(".open-task-btn");
+  const closeTaskBtn = document.querySelector(".close-task-btn");
+  openTaskBtn.addEventListener("click", () => dialog.showModal());
+  closeTaskBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    dialog.close();
+    form.reset();
+  });
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target).entries());
+    createTask(data);
+    printList();
+    dialog.close();
+    e.target.reset();
+  });
+})();
+
+// listing all projects in form options
+export const listProjectOptions = function () {
+  const projectsOptions = document.querySelector("#project");
+  projectsOptions.innerHTML = "";
+  Projects.forEach((project) => {
+    const option = document.createElement("option");
+    option.value = project.id;
+    option.textContent = project.name;
+    projectsOptions.appendChild(option);
+  });
+};
 
 const listEl = document.querySelector(".list");
 const projectList = document.querySelector(".project-list");
@@ -48,6 +67,7 @@ function printProject(project) {
     if (project.name !== "Default") {
       deleteProject(project.id);
       printProjects();
+      listProjectOptions();
     }
   });
   projectEL.addEventListener("click", () => {
@@ -55,7 +75,8 @@ function printProject(project) {
   });
   projectEL.className = "project";
   projectEL.textContent = `# ${project.name}`;
-  projectEL.appendChild(deleteBtn);
+  // you can delete any other project except default one
+  project.name == "Default" ? null : projectEL.appendChild(deleteBtn);
   projectList.appendChild(projectEL);
 }
 
@@ -83,7 +104,7 @@ function printTask(task) {
   priorityEl.textContent = task.priority;
 
   const projectEl = document.createElement("p");
-  projectEl.textContent = `# ${task.project}`;
+  projectEl.textContent = `# ${task.projectName}`;
 
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "X";
@@ -113,10 +134,9 @@ export function printProjects() {
 }
 
 function printProjectTasks(project) {
-  const projectTasks = toDoList.filter((task) => task.project === project);
-  console.log(projectTasks);
+  const projectTasks = toDoList.filter((task) => task.projectId === project.id);
   listEl.innerHTML = "";
   projectTasks.length
     ? projectTasks.forEach((task) => printTask(task))
-    : (listEl.textContent = "No tasks left");
+    : (listEl.textContent = "No tasks at the moment");
 }

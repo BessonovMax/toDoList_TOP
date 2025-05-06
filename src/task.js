@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { Storage } from "./storage";
+import { Projects } from "./project";
 
 export class toDoTask {
   constructor(data) {
@@ -8,7 +9,10 @@ export class toDoTask {
     this.description = data.description;
     this.dueDate = data.dueDate;
     this.priority = data.priority;
-    this.project = data.project;
+    this.projectId = data.projectId;
+    this.projectName = Projects.find(
+      (project) => project.id === data.projectId
+    )?.name;
     this.completed = data.completed ? data.completed : false;
   }
 
