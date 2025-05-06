@@ -1,6 +1,13 @@
 import { createProject, deleteProject, Projects } from "./project";
 import { deleteTask, toDoList, toggleComplete, createTask } from "./task";
-import { format } from "date-fns";
+import {
+  format,
+  addDays,
+  isWithinInterval,
+  startOfWeek,
+  endOfWeek,
+  parseISO,
+} from "date-fns";
 
 const addProjectForm = (function () {
   const addProjectForm = document.querySelector(".project-add-form");
@@ -139,6 +146,76 @@ export function printList() {
   listEl.innerHTML = "";
   toDoList.forEach((task) => printTask(task));
 }
+
+const initializeDateFilterList = (function () {
+  function printTodayTasks() {
+    const today = format(new Date(), "yyyy-MM-dd");
+    const todayTasks = toDoList.filter((task) => task.dueDate === today);
+    listEl.innerHTML = "";
+    todayTasks.length
+      ? todayTasks.forEach((task) => printTask(task))
+      : (listEl.textContent = "No tasks at the moment");
+  }
+
+  function printTomorrowTasks() {
+    const tomorrow = format(addDays(new Date(), 1), "yyyy-MM-dd");
+    const tomorrowTasks = toDoList.filter((task) => task.dueDate === tomorrow);
+    listEl.innerHTML = "";
+    tomorrowTasks.length
+      ? tomorrowTasks.forEach((task) => printTask(task))
+      : (listEl.textContent = "No tasks at the moment");
+  }
+
+  function printWeekTasks() {
+    const today = new Date();
+
+    const start = startOfWeek(today, { weekStartsOn: 1 }); // Week starts on Monday
+    const end = endOfWeek(today, { weekStartsOn: 1 });
+
+    const isDueThisWeek = (task) => {
+      const dueDate = parseISO(task.dueDate);
+      return isWithinInterval(dueDate, { start, end });
+    };
+    const tasksThisWeek = toDoList.filter(isDueThisWeek);
+
+    listEl.innerHTML = "";
+    tasksThisWeek.length
+      ? tasksThisWeek.forEach((task) => printTask(task))
+      : (listEl.textContent = "No tasks at the moment");
+  }
+
+  function printExpiredTasks() {
+    const today = format(new Date(), "yyyy-MM-dd");
+    const expiredTasks = toDoList.filter(
+      (task) => task.dueDate < today && task.completed === false
+    );
+    listEl.innerHTML = "";
+    expiredTasks.length
+      ? expiredTasks.forEach((task) => printTask(task))
+      : (listEl.textContent = "No tasks at the moment");
+  }
+
+  const todayEl = document.querySelector(".today-tasks");
+  todayEl.addEventListener("click", () => {
+    printTodayTasks();
+  });
+  const tomorrowEl = document.querySelector(".tomorrow-tasks");
+  tomorrowEl.addEventListener("click", () => {
+    printTomorrowTasks();
+  });
+  const weekEl = document.querySelector(".week-tasks");
+  weekEl.addEventListener("click", () => {
+    printWeekTasks();
+  });
+  const allEl = document.querySelector(".all-tasks");
+  allEl.addEventListener("click", () => {
+    printList();
+  });
+  const expiredEl = document.querySelector(".expired-tasks");
+  expiredEl.addEventListener("click", () => {
+    printExpiredTasks();
+  });
+})();
 
 export function printProjects() {
   projectList.innerHTML = "";

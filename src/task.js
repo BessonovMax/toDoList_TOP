@@ -1,12 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 import { Storage } from "./storage";
+import { format } from "date-fns";
 
 export class toDoTask {
   constructor(data) {
     this.id = data.id ? data.id : uuidv4();
     this.title = data.title;
     this.description = data.description;
-    this.dueDate = data.dueDate;
+    this.dueDate = format(data.dueDate, "yyyy-MM-dd");
     this.priority = data.priority;
     this.projectId = data.projectId;
     this.projectName = data.projectName;
