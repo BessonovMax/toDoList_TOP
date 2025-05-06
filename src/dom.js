@@ -10,7 +10,7 @@ const addProjectForm = (function () {
   closeProjectBtn.addEventListener("click", (e) => {
     e.preventDefault();
     dialog.close();
-    e.target.reset();
+    addProjectForm.reset();
   });
   addProjectForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -19,7 +19,7 @@ const addProjectForm = (function () {
     printProjects();
     listProjectOptions();
     dialog.close();
-    e.target.reset();
+    addProjectForm.reset();
   });
 })();
 
@@ -37,6 +37,10 @@ const addTaskForm = (function () {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.target).entries());
+    data.projectName = Projects.find(
+      (project) => project.id === data.projectId
+    )?.name;
+    console.log(data);
     createTask(data);
     printList();
     dialog.close();

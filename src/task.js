@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 import { Storage } from "./storage";
-import { Projects } from "./project";
 
 export class toDoTask {
   constructor(data) {
@@ -10,9 +9,7 @@ export class toDoTask {
     this.dueDate = data.dueDate;
     this.priority = data.priority;
     this.projectId = data.projectId;
-    this.projectName = Projects.find(
-      (project) => project.id === data.projectId
-    )?.name;
+    this.projectName = data.projectName;
     this.completed = data.completed ? data.completed : false;
   }
 
@@ -42,4 +39,13 @@ export function deleteTask(id) {
     toDoList.splice(indx, 1);
     Storage.saveTasks(toDoList);
   }
+}
+
+export function deleteProjectTasks(projectId) {
+  const remainingTasks = toDoList.filter(
+    (task) => task.projectId !== projectId
+  );
+  toDoList.length = 0; // clear the original array
+  toDoList.push(...remainingTasks); // repopulate with filtered tasks
+  Storage.saveTasks(toDoList);
 }
