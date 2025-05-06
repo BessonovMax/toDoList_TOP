@@ -64,24 +64,28 @@ const listEl = document.querySelector(".list");
 const projectList = document.querySelector(".project-list");
 
 function printProject(project) {
+  const projectWrap = document.createElement("div");
+  projectWrap.className = "project-wrap";
   const projectEL = document.createElement("div");
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "X";
+  projectEL.addEventListener("click", () => {
+    printProjectTasks(project);
+  });
   deleteBtn.addEventListener("click", () => {
     if (project.name !== "Default") {
       deleteProject(project.id);
       printProjects();
       listProjectOptions();
+      printList();
     }
-  });
-  projectEL.addEventListener("click", () => {
-    printProjectTasks(project);
   });
   projectEL.className = "project";
   projectEL.textContent = `# ${project.name}`;
+  projectWrap.appendChild(projectEL);
   // you can delete any other project except default one
-  project.name == "Default" ? null : projectEL.appendChild(deleteBtn);
-  projectList.appendChild(projectEL);
+  project.name == "Default" ? null : projectWrap.appendChild(deleteBtn);
+  projectList.appendChild(projectWrap);
 }
 
 function printTask(task) {
